@@ -1,40 +1,54 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { NewContext } from "../App";
 
 const INITIAL_POST = {
-    title: '',
-    content: '',
-}
+    title: "",
+    content: "",
+};
 
-export default function CreatePost({ posts, setPosts }) {
-    const [post, setPost] = useState(INITIAL_POST)
+export default function CreatePost() {
+    const [post, setPost] = useState(INITIAL_POST);
+
+    const { posts, setPosts } = useContext(NewContext);
 
     const handleChange = (e) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setPost({
-          ...post,
-          [name]: value,
-        })
-    }
+            ...post,
+            [name]: value,
+        });
+    };
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        setPosts([...posts, post])
-        setPost(INITIAL_POST)
-    }
+        e.preventDefault();
+        setPosts([...posts, post]);
+        setPost(INITIAL_POST);
+    };
 
     return (
         <form onSubmit={handleSubmit}>
             <label>
-              Title:
-              <input type="text" name="title" onChange={handleChange} value={post.title}></input>
+                Title:
+                <input
+                    type="text"
+                    name="title"
+                    onChange={handleChange}
+                    value={post.title}
+                ></input>
             </label>
-            <br/>
+            <br />
             <label>
-              Content:
-              <textarea name="content" onChange={handleChange} value={post.content} cols={50} rows={5}></textarea>
+                Content:
+                <textarea
+                    name="content"
+                    onChange={handleChange}
+                    value={post.content}
+                    cols={50}
+                    rows={5}
+                ></textarea>
             </label>
-            <br/>
+            <br />
             <input type="submit" value="Post!"></input>
         </form>
-    )
+    );
 }
