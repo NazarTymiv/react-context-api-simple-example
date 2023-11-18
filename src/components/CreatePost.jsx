@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NewContext } from "../App";
 
 const INITIAL_POST = {
@@ -11,18 +11,30 @@ export default function CreatePost() {
 
     const { posts, setPosts } = useContext(NewContext);
 
+    useEffect(() => {
+        const localPosts = localStorage.getItem("posts");
+
+        localPosts && setPost(JSON.parse(localPosts));
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPost({
             ...post,
             [name]: value,
         });
+
+        localStorage.setItem(
+            "posts",
+            JSON.stringify({ ...post, [name]: value })
+        );
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setPosts([...posts, post]);
         setPost(INITIAL_POST);
+        localStorage.clear();
     };
 
     return (
